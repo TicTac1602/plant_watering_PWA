@@ -1,0 +1,18 @@
+.app-container {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f0f0f0; /* Couleur de fond de l'application */
+    height: 100vh; /* Hauteur de l'application */
+  }
+  
+  .sidebar-left,
+  .sidebar-right {
+    width: 10vw; /* Largeur des barres latérales */
+    background-color: rgb(69 155 69); /* Couleur des barres latérales */
+  }
+  
+  .main-content {
+    flex-grow: 1;
+    padding: 20px; /* Espacement du contenu principal */
+  }
+  

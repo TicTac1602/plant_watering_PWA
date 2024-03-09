@@ -1,0 +1,56 @@
+.plante-list {
+    width: 80%;
+    margin: auto;
+  }
+  
+  .plante-items {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .plante-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+  }
+  
+  .plante-info {
+    flex-grow: 1;
+  }
+  
+  .plante-name {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .plante-actions button {
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  
+  .add-button {
+    margin-bottom: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .edit-button,
+  .delete-button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .delete-button {
+    background-color: #dc3545;
+  }
+  
