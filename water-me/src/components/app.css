@@ -8,7 +8,7 @@
   .sidebar-left,
   .sidebar-right {
     width: 10vw; /* Largeur des barres latérales */
-    background-color: rgb(69 155 69); /* Couleur des barres latérales */
+    background-color: rgb(86, 146, 86); /* Couleur des barres latérales */
   }
   
   .main-content {

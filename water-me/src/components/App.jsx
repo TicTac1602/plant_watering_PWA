@@ -1,7 +1,4 @@
-import {
-    createBrowserRouter,
-    RouterProvider,
-  } from "react-router-dom";
+import { createBrowserRouter, RouterProvider} from "react-router-dom";
 import LoginPage from "./LoginPage";
 import PlanteForm from "./PlanteForm";
 import PlanteList from "./PlanteList";
@@ -14,12 +11,18 @@ function App() {
   useEffect(() => {
     // Vérifie si l'utilisateur est authentifié
     const token = localStorage.getItem('token'); // Récupère le token JWT du stockage local
-    if (token) {
+    if (verifyAuthentication(token)) {
       setIsAuthenticated(true);
     } else {
       setIsAuthenticated(false);
     }
   }, []);
+
+  const verifyAuthentication = (token) => {
+    // Ici, tu vérifieras si le token est valide en le décodant et en vérifiant s'il est expiré
+    // Pour l'instant, on se contente de vérifier s'il est present
+    return token !== null;
+  }
 
   const router = createBrowserRouter([
     { path: "/", element: <PlanteList /> }, // Utilisation de l'élément pour spécifier le composant à rendre
