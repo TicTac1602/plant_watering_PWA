@@ -6,7 +6,7 @@ const cors = require('cors');
 
 // Configuration de l'application Express
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5500;
 
 // Middleware pour les requêtes entrantes
 app.use(cors());

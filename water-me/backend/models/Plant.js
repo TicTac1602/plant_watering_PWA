@@ -1,16 +1,14 @@
-const e = require('express');
-
 const plantDB = require('../database/db').plantDB;
 
 // Modèle de plante
 class Plant {
-    constructor(name, type, wateringFrequency, userId, description, photo) {
+    constructor(name, type, wateringFrequency, userId, description, file) {
         this.name = name;
         this.type = type;
         this.wateringFrequency = wateringFrequency;
         this.userId = userId;
         this.description = description;
-        this.photo = photo;
+        this.file = file;
     }
 
     // Méthode pour trouver toutes les plantes
@@ -50,9 +48,9 @@ class Plant {
     }
 
     // Méthode pour créer une nouvelle plante avec tous les champs requis
-    static createPlantWithAllFields(name, type, wateringFrequency, userId, description, photo) {
+    static createPlantWithAllFields(name, type, wateringFrequency, userId, description, file) {
         return new Promise((resolve, reject) => {
-            const newPlant = new Plant(name, type, wateringFrequency, userId, description, photo);
+            const newPlant = new Plant(name, type, wateringFrequency, userId, description, file);
             plantDB.insert(newPlant, (err, insertedPlant) => {
                 if (err) {
                     reject(err);
@@ -63,16 +61,32 @@ class Plant {
     }
 
     // Méthode pour mettre à jour une plante
-    static updatePlant(id, name, type, wateringFrequency) {
+    static updatePlant(id, name, type, wateringFrequency, description, file) {
         return new Promise((resolve, reject) => {
-            plantDB.update({ _id: id }, { $set: { name, type, wateringFrequency } }, {}, (err, numReplaced) => {
+            plantDB.update({ _id: id }, { $set: { name, type, wateringFrequency, description, file } }, {}, (err, numReplaced) => {
                 if (err) {
                     reject(err);
+                    return;
                 }
-                resolve(numReplaced);
+                if (numReplaced === 0) {
+                    reject(new Error("Aucun document n'a été mis à jour."));
+                    return;
+                }
+                plantDB.findOne({ _id: id }, (err, updatedPlant) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    if (!updatedPlant) {
+                        reject(new Error("Le document mis à jour n'a pas été trouvé."));
+                        return;
+                    }
+                    resolve(updatedPlant);
+                });
             });
         });
     }
+    
 
     // Méthode pour supprimer une plante
     static deletePlant(id) {

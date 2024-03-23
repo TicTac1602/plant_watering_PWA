@@ -20,14 +20,14 @@ function LoginPage({ onLogin }) {
       let response;
       if (isRegistering) {
         // Envoi des données d'inscription au serveur
-        response = await axios.post('http://localhost:5000/auth/register', {
+        response = await axios.post('http://localhost:5500/auth/register', {
           username,
           email,
           password
         });
       } else {
         // Envoi des données de connexion au serveur
-        response = await axios.post('http://localhost:5000/auth/login', {
+        response = await axios.post('http://localhost:5500/auth/login', {
           username,
           password
         });

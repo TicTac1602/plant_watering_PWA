@@ -18,7 +18,9 @@ const plantSchema = {
     name: String,
     type: String,
     wateringFrequency: Number,
-    userId: String
+    userId: Number,
+    description: String,
+    file: String
 };
 
 

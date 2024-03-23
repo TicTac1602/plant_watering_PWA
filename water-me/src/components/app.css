@@ -11,8 +11,3 @@
     background-color: rgb(86, 146, 86); /* Couleur des barres latérales */
   }
   
-  .main-content {
-    flex-grow: 1;
-    padding: 20px; /* Espacement du contenu principal */
-  }
-  

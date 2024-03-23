@@ -1,6 +1,5 @@
 import { createBrowserRouter, RouterProvider} from "react-router-dom";
 import LoginPage from "./LoginPage";
-import PlanteForm from "./PlanteForm";
 import PlanteList from "./PlanteList";
 import { useState, useEffect } from 'react';
 import './app.css';
@@ -26,7 +25,6 @@ function App() {
 
   const router = createBrowserRouter([
     { path: "/", element: <PlanteList /> }, // Utilisation de l'élément pour spécifier le composant à rendre
-    { path: "/plante/:id", element: <PlanteForm /> },
     { path: "/login", element: <LoginPage onLogin={() => setIsAuthenticated(true)}/> },
   ]);
 
