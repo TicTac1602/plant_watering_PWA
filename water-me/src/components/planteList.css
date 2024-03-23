@@ -1,5 +1,4 @@
 .plante-list {
-    width: 80%;
     margin: auto;
   }
   
@@ -21,7 +20,14 @@
   }
   
   .plante-name {
+    display: block;
     font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .plante-type {
+    font-style: italic;
+    font-size: small;
     margin-right: 10px;
   }
   
@@ -98,7 +104,7 @@
   .modal input,
   .modal textarea {
     width: 100%;
-    padding: 10px;
+    padding: 10px 0px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -117,4 +123,103 @@
     background-color: #45a049;
   }
   
+  /* planteList.css */
+.plante-list {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.add-button {
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal {
+  display: block;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  border-radius: 5px;
+  width: 80%;
+  max-width: 500px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.plante-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.plante-card {
+  position: relative; /* Ajout de la position relative */
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+}
+
+.plante-actions {
+  position: absolute; /* Ajout de la position absolue */
+  top: 10px; /* Alignement en haut */
+  right: 10px; /* Alignement à droite */
+}
+
+.edit-button,
+.delete-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.edit-button {
+  color: #007bff;
+}
+
+.delete-button {
+  color: #dc3545;
+}
+
+.plante-image {
+  width: 128px;
+  height: 128px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
   

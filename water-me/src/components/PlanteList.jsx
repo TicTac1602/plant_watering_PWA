@@ -6,69 +6,120 @@ import './planteList.css';
 function PlanteList() {
   const [plantes, setPlantes] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [modalMode, setModalMode] = useState('create');
   const [newPlante, setNewPlante] = useState({
     name: '',
     type: '',
     description: '',
     wateringFrequency: '',
     userId: '1',
-    photo: ''
+    file: undefined
   });
 
   useEffect(() => {
-    // Requête pour récupérer les plantes associées à l'utilisateur
-    axios.get('http://localhost:5000/plants/')
-      .then(response => {
-        if (response.data.plants.length !== 0)
-          setPlantes(response.data.plants);
-      })
-      .catch(error => {
-        console.error('Erreur lors de la récupération des plantes:', error);
-      });
+    axios.get('http://localhost:5500/plants/').then(response => {
+      if (response.data.plants.length !== 0) {
+        setPlantes(response.data.plants);
+      }
+    }).catch (error => {
+      console.error('Erreur lors de la récupération des plantes:', error);
+    });
   }, []);
 
   const navigate = useNavigate();
 
   const handleEdit = (id) => {
-    // Rediriger l'utilisateur vers le formulaire d'édition de la plante
-    navigate(`/plants/${id}`);
+    // Ouvrir le formulaire avec les données de la plante à éditer
+    const plante = plantes.find(plante => plante._id === id);
+    if (!plante) {
+      console.error('Plante non trouvée:', id);
+      return;
+    }
+    setNewPlante(plante);
+    setShowModal(true);
+    setModalMode('edit');
   };
 
   const handleCreatePlante = () => {
-    // on remplace le userId par l'ID de l'utilisateur connecté contenu dans le token
     const token = localStorage.getItem('token');
     if (!token) {
       console.error('Token manquant');
       navigate('/login');
       return;
     }
-    // TODO: extraire l'ID de l'utilisateur du token
-    // const userId = jwt_decode(token).id;
-
-    // Envoyer les données de la nouvelle plante au serveur
-    console.log('Nouvelle plante:', newPlante);
-    axios.post('http://localhost:5000/plants', newPlante)
-      .then(response => {
-        console.log('Nouvelle plante ajoutée:', response.data.plant);
-        setPlantes([...plantes, response.data.plant]);
-        setShowModal(false);
-        // Réinitialiser les valeurs du formulaire de création
-        setNewPlante({
-          name: '',
-          type: '',
-          description: '',
-          wateringFrequency: '',
-          photo: ''
-        });
-      })
-      .catch(error => {
-        console.error('Erreur lors de la création de la plante:', error);
+  
+    const formData = new FormData();
+    formData.append('name', newPlante.name);
+    formData.append('type', newPlante.type);
+    formData.append('description', newPlante.description);
+    formData.append('wateringFrequency', newPlante.wateringFrequency);
+    formData.append('userId', newPlante.userId);
+    formData.append('photo', newPlante.file); // Ajoutez le fichier à FormData
+  
+    axios.post('http://localhost:5500/plants', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data', // Indiquez au serveur que vous envoyez des données multipart/form-data
+        Authorization: `Bearer ${token}` // Ajoutez l'en-tête d'autorisation
+      }
+    })
+    .then(response => {
+      setPlantes([...plantes, response.data.plant]);
+      setShowModal(false);
+      // Réinitialiser les valeurs du formulaire de création
+      setNewPlante({
+        name: '',
+        type: '',
+        description: '',
+        wateringFrequency: '',
+        file: undefined // Remettez à zéro le fichier
       });
+    })
+    .catch(error => {
+      console.error('Erreur lors de la création de la plante:', error);
+    });
   };
+
+  const handleUpdatePlante = () => {
+    const formData = new FormData();
+    formData.append('_id', newPlante._id);
+    formData.append('name', newPlante.name);
+    formData.append('type', newPlante.type);
+    formData.append('description', newPlante.description);
+    formData.append('wateringFrequency', newPlante.wateringFrequency);
+    formData.append('photo', newPlante.file);
+  
+    axios.put(`http://localhost:5500/plants/${newPlante._id}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data', 
+      }
+    })
+    .then(response => {
+      const newPlante = response.data.plant;
+      const updatedPlantes = plantes.map(plante =>
+        plante._id === newPlante._id ? newPlante : plante
+      );
+
+      setPlantes(updatedPlantes);
+      setShowModal(false);
+      setModalMode('create');
+      // Réinitialiser les valeurs du formulaire de création
+      setNewPlante({
+        name: '',
+        type: '',
+        description: '',
+        wateringFrequency: '',
+        file: undefined // Remettez à zéro le fichier
+      });
+    })
+    .catch(error => {
+      console.error('Erreur lors de la mise à jour de la plante:', error);
+    });
+  };
+  
 
   const handleDelete = (id) => {
     // Envoyer une requête de suppression de la plante au serveur
-    axios.delete(`http://localhost:5000/plants/${id}`)
+    axios.delete(`http://localhost:5500/plants/${id}`)
       .then(response => {
         // Mettre à jour la liste des plantes en supprimant la plante supprimée
         setPlantes(plantes.filter(plante => plante._id !== id));
@@ -81,8 +132,7 @@ function PlanteList() {
   return (
     <div className="plante-list">
       <h1>Liste des Plantes</h1>
-      <button className="add-button" onClick={() => setShowModal(true)}>Ajouter une Plante</button>
-      {/* Boîte de dialogue modale pour la création d'une nouvelle plante */}
+      <button className="add-button" onClick={() => {setShowModal(true); setModalMode('create')}}>Ajouter une Plante</button>
       {showModal && (
         <div className="modal">
           <div className="modal-content">
@@ -92,7 +142,7 @@ function PlanteList() {
               <label>Nom de la plante:</label>
               <input
                 type="text"
-                value={newPlante.nom}
+                value={newPlante.name}
                 onChange={(e) => setNewPlante({ ...newPlante, name: e.target.value })}
               />
               <label>Type de plante:</label>
@@ -109,32 +159,38 @@ function PlanteList() {
               <label>Fréquence d'arrosage:</label>
               <input
                 type="text"
-                value={newPlante.frequenceArrosage}
+                value={newPlante.wateringFrequency}
                 onChange={(e) => setNewPlante({ ...newPlante, wateringFrequency: e.target.value })}
               />
               <label>Photo:</label>
               <input
                 type="file"
+                name="photo"
                 accept="image/*"
-                onChange={(e) => setNewPlante({ ...newPlante, photo: e.target.files[0] })}
+                onChange={(e) => setNewPlante({ ...newPlante, file: e.target.files[0] })}
               />
-              <button type="button" onClick={handleCreatePlante}>Créer</button>
+              <button type="button" onClick={modalMode === 'create' ? handleCreatePlante : handleUpdatePlante}>{modalMode === 'create' ? 'Créer' : 'Editer'}</button>
             </form>
           </div>
         </div>
       )}
       <ul className="plante-items">
       {plantes.map(plante => (
-        <li key={plante._id} className="plante-item">
-          <div className="plante-info">
-            <span className="plante-name">{plante.nom}</span>
-            <span className="plante-type">{plante.type}</span>
-          </div>
-          <div className="plante-actions">
-            <button className="edit-button" onClick={() => handleEdit(plante._id)}>Editer</button>
-            <button className="delete-button" onClick={() => handleDelete(plante._id)}>Supprimer</button>
-          </div>
-        </li>
+        <div key={plante._id} className="plante-card">
+        <div className="plante-info">
+          {plante.file && <img src={plante.file} alt={plante.name} className="plante-image" />}
+          <span className="plante-name">{plante.name}</span>
+          <span className="plante-type">{plante.type}</span>
+        </div>
+        <div className="plante-actions">
+          <button className="edit-button" onClick={() => handleEdit(plante._id)}>
+            <i className="fas fa-edit"></i>
+          </button>
+          <button className="delete-button" onClick={() => handleDelete(plante._id)}>
+            <i className="fas fa-trash-alt"></i>
+          </button>
+        </div>
+      </div>
       ))}
       </ul>
     </div>
