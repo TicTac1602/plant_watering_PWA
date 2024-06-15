@@ -2,7 +2,7 @@
 :root{
     --primary: #a6b6a7;
     --secondary: #83b185;
-    --test: #FFE1C4;
+    --thursty: #ff4444;
     --title: #4CAF50;
   }
   
@@ -10,6 +10,9 @@
   nav{
     background: var(--primary);
     margin-bottom: 1em;
+    position: sticky;
+    top: 0;
+    z-index: 100;
   }
   nav a{
     color: var(--title);
@@ -73,4 +76,10 @@
   }
   form .input-field{
     margin-top: 30px;
+  }
+
+  .toBeWater{
+    background-color: var(--thursty) !important;
+    margin-top: 20px;
+    color: white;
   }

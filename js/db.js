@@ -36,6 +36,7 @@ onSnapshot(plantsCollection, snapshot => {
     snapshot.docChanges().forEach(change => {
         if(change.type === 'added') {
             renderPlant(change.doc.data(), change.doc.id);
+            applyBackgroundColors(change.doc.data(), change.doc.id);
         }
         if(change.type === 'removed') {
             removePlant(change.doc.id);

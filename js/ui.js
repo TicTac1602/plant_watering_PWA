@@ -1,34 +1,56 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // nav menu
-    const menus = document.querySelectorAll('.side-menu');
-    M.Sidenav.init(menus, {edge: 'right'});
-    // add plant form
-    const forms = document.querySelectorAll('.side-form');
-    M.Sidenav.init(forms, {edge: 'left'});
-    var elems = document.querySelectorAll('select');
-        M.FormSelect.init(elems);
-  });
+  // nav menu
+  const menus = document.querySelectorAll('.side-menu');
+  M.Sidenav.init(menus, {edge: 'right'});
+  // add plant form
+  const forms = document.querySelectorAll('.side-form');
+  M.Sidenav.init(forms, {edge: 'left'});
+  var elems = document.querySelectorAll('select');
+  M.FormSelect.init(elems);
+});
 
-  // render plant data
-  const plants = document.querySelector('.plants');
-  const renderPlant = (data, id) => {
-    const html = `
-      <div class="card-panel plant white row" data-id="${id}">
-        <img src="/img/plant.png" alt="plant thumb">
-        <div class="plant-details">
-          <div class="plant-title">${data.name}</div>
-          <div class="plant-description">${data.description}</div>
-        </div>
-        <div class="plant-delete">
-          <i class="material-icons" data-id="${id}">delete_outline</i>
-        </div>
+// render plant data
+const plants = document.querySelector('.plants');
+const renderPlant = (data, id) => {
+  const html = `
+    <div class="card-panel plant white row" data-id="${id}">
+      <img src="/img/plant.png" alt="plant thumb">
+      <div class="plant-details">
+        <div class="plant-title">${data.name}</div>
+        <div class="plant-description">${data.description}</div>
       </div>
-    `;
-    plants.innerHTML += html;
-  }
+      <div class="plant-delete">
+        <i class="material-icons" data-id="${id}">delete_outline</i>
+      </div>
+    </div>
+  `;
+  plants.innerHTML += html;
+}
 
-  // remove plant data
-  const removePlant = (id) => {
-    const plant = document.querySelector(`.plant[data-id="${id}"]`);
-    plant.remove();
-  }
+// remove plant data
+const removePlant = (id) => {
+  const plant = document.querySelector(`.plant[data-id="${id}"]`);
+  plant.remove();
+}
+
+// Fonction pour calculer la prochaine date d'arrosage
+function calculateNextWatering(lastWateredTimestamp, wateringFrequency) {
+    const nextWatering = lastWateredTimestamp + (wateringFrequency * 24 * 60 * 60 * 1000);
+    return nextWatering;
+}
+
+// Fonction pour appliquer la couleur d'arrière-plan en fonction de la date actuelle
+function applyBackgroundColors(plant,id) {
+   console.log(plant,id);
+    const today = new Date().getTime();
+    const lastWateredTimestamp = plant.last_watered; // Suppose last_watered est un timestamp UNIX
+    const wateringFrequency = plant.watering_span;
+    const nextWateringDate = calculateNextWatering(lastWateredTimestamp, wateringFrequency);
+
+    console.log(today, nextWateringDate, today > nextWateringDate);
+
+    if (today > nextWateringDate) {
+        const plantElement = document.querySelector(`.plant[data-id="${id}"]`);
+        plantElement.classList.add("toBeWater"); // Couleur pour signaler qu'il faut arroser
+    }
+}
