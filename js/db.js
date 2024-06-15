@@ -49,18 +49,21 @@ form.addEventListener('submit', evt => {
     evt.preventDefault();
     const plant = {
         name: form.name.value,
-        description: form.description.value
+        description: form.description.value,
+        grow_speed: form.grow_speed.value,
+        watering_span: parseInt(form.watering_span.value),
+        last_watered: new Date().getTime(),
     };
     addDoc(plantsCollection, plant)
         .catch(err => console.log(err));
     form.name.value = '';
     form.description.value = '';
+    form.watering_span.value = 0;
 });
 
 // delete plant
 const plants = document.querySelector('.plants');
 plants.addEventListener('click', evt => {
-    console.log(evt.target);
     if(evt.target.tagName === 'I') {
         const id = evt.target.getAttribute('data-id');
         deleteDoc(doc(db, 'plants', id));

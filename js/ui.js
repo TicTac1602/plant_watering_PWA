@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // add plant form
     const forms = document.querySelectorAll('.side-form');
     M.Sidenav.init(forms, {edge: 'left'});
+    var elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems);
   });
 
   // render plant data
@@ -27,6 +29,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // remove plant data
   const removePlant = (id) => {
-    const plant = document.querySelector(`.plant[data-id=${id}]`);
+    const plant = document.querySelector(`.plant[data-id="${id}"]`);
     plant.remove();
   }

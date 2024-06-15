@@ -50,19 +50,32 @@
   <!-- add plant side nav -->
   <div id="side-form" class="sidenav side-form">
     <form class="add-plant container section">
-      <h6 >New plant</h6>
-      <div class="divider"></div>
-      <div class="input-field">
-        <input placeholder="e.g. Julio" id="name" type="text" class="validate">
-        <label for="name">Plant name</label>
-      </div>
-      <div class="input-field">
-        <input placeholder="e.g. Lives in dark spots" id="description" type="text" class="validate">
-        <label for="description">Description</label>
-      </div>
-      <div class="input-field center">
-        <button class="btn-small">Add</button>
-      </div>
+        <h6>New plant</h6>
+        <div class="divider"></div>
+        <div class="input-field">
+            <input placeholder="e.g. Julio" id="name" type="text" class="validate">
+            <label for="name">Plant name</label>
+        </div>
+        <div class="input-field">
+            <input placeholder="e.g. Lives in dark spots" id="description" type="text" class="validate">
+            <label for="description">Description</label>
+        </div>
+        <div class="input-field">
+            <select id="grow_speed">
+                <option value="" disabled selected>Choose your option</option>
+                <option value="slow">Lente</option>
+                <option value="normal">Normale</option>
+                <option value="fast">Rapide</option>
+            </select>
+            <label for="growth_speed">Growth Speed</label>
+        </div>
+        <div class="input-field">
+            <input placeholder="e.g. 7" id="watering_span" type="number" class="validate">
+            <label for="watering-span">Watering Frequency (days)</label>
+        </div>
+        <div class="input-field center">
+            <button class="btn-small" type="submit">Add</button>
+        </div>
     </form>
   </div>
 
