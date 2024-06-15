@@ -54,11 +54,18 @@ form.addEventListener('submit', evt => {
         watering_span: parseInt(form.watering_span.value),
         last_watered: new Date().getTime(),
     };
+
+    // form validation
+    if(plant.name === '' || !plant.watering_span || plant.watering_span < 0) {
+        alert('Please fill all fields');
+        return;
+    }
+
     addDoc(plantsCollection, plant)
         .catch(err => console.log(err));
     form.name.value = '';
     form.description.value = '';
-    form.watering_span.value = 0;
+    form.watering_span.value = 1;
 });
 
 // delete plant
