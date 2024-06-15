@@ -43,3 +43,28 @@ onSnapshot(plantsCollection, snapshot => {
     });
 });
 
+// add new plant
+const form = document.querySelector('.add-plant');
+form.addEventListener('submit', evt => {
+    evt.preventDefault();
+    const plant = {
+        name: form.name.value,
+        description: form.description.value
+    };
+    addDoc(plantsCollection, plant)
+        .catch(err => console.log(err));
+    form.name.value = '';
+    form.description.value = '';
+});
+
+// delete plant
+const plants = document.querySelector('.plants');
+plants.addEventListener('click', evt => {
+    console.log(evt.target);
+    if(evt.target.tagName === 'I') {
+        const id = evt.target.getAttribute('data-id');
+        deleteDoc(doc(db, 'plants', id));
+    } else if (evt.target.tagName === 'DIV' && !evt.target.classList.contains('plants')) {
+        console.log("open plant details");
+    }
+});
