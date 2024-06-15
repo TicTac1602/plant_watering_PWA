@@ -83,3 +83,22 @@
     margin-top: 20px;
     color: white;
   }
+
+
+  /* Styles spécifiques à la page About */
+.aboutcontainer {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.aboutsection {
+  margin-bottom: 20px;
+}
+
+ul {
+  margin-top: 0;
+  padding-left: 20px;
+}
+
+/* Autres styles pour votre application */
