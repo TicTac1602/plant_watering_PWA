@@ -5,6 +5,10 @@
     --thursty: #ff4444;
     --title: #4CAF50;
   }
+
+  body{
+    min-height: 100vh;
+  }
   
   /* layout styles */
   nav{
@@ -102,3 +106,10 @@ ul {
 }
 
 /* Autres styles pour votre application */
+#login-form, #signup-form
+{
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
